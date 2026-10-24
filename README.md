@@ -40,16 +40,16 @@ Components **never** make direct HTTP calls and **never** duplicate server state
 
 ```mermaid
 graph TD
-    UI[React Components / Pages] -->|Dispatch Thunks Only| Thunks[Redux Async Thunks]
-    Thunks -->|api.get / api.post| Axios[Axios Instance with Interceptors]
-    Axios -->|401 Auto-Refresh Queue| Refresh[POST /api/auth/refresh]
+    UI["React Components / Pages"] -->|Dispatch Thunks Only| Thunks["Redux Async Thunks"]
+    Thunks -->|api.get / api.post| Axios["Axios Instance with Interceptors"]
+    Axios -->|401 Auto-Refresh Queue| Refresh["POST /api/auth/refresh"]
     Axios -->|Network Response| Thunks
-    Thunks -->|Fulfilled / Rejected Actions| Reducers[Entity Adapter Reducers]
-    Reducers -->|Normalized State| Store[(Redux Root Store)]
+    Thunks -->|Fulfilled / Rejected Actions| Reducers["Entity Adapter Reducers"]
+    Reducers -->|Normalized State| Store[("Redux Root Store")]
     Store -->|createSelector / Memoized Selectors| UI
-    UI -.->|Forbidden / Role Route| Forbidden[403 Page]
-    UI -.->|Unauthenticated| LoginRedirect[/login preserving return location]
-    LogoutAction[auth/logout or 401 Expiry] -->|Root Reducer Reset| Store
+    UI -.->|Forbidden / Role Route| Forbidden["403 Page"]
+    UI -.->|Unauthenticated| LoginRedirect["/login preserving return location"]
+    LogoutAction["auth/logout or 401 Expiry"] -->|Root Reducer Reset| Store
 ```
 
 ---
