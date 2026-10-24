@@ -1,0 +1,16 @@
+{
+  "name": "multi-tenant-saas",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Multi-tenant SaaS starter with MERN, row-level tenant isolation, JWT auth, and Redux Toolkit",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "seed": "npm --prefix server run seed",
+    "test": "npm --prefix server run test && npm --prefix client run test",
+    "test:server": "npm --prefix server run test",
+    "test:client": "npm --prefix client run test",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "build:client": "npm --prefix client run build"
+  }
+}
