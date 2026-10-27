@@ -20,7 +20,7 @@ export const AuthLayout = () => {
             <Layers className="h-6 w-6 text-brand-300" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight">SaaSify Enterprise</h1>
+            <span className="block text-xl font-bold tracking-tight">SaaSify Enterprise</span>
             <p className="text-xs text-brand-200">Multi-Tenant Cloud Platform</p>
           </div>
         </div>
@@ -65,7 +65,7 @@ export const AuthLayout = () => {
       </div>
 
       {/* Right Form Container */}
-      <div className="flex-1 flex flex-col justify-center items-center p-4 sm:p-8 lg:p-12">
+      <main className="flex-1 flex flex-col justify-center items-center p-4 sm:p-8 lg:p-12">
         <div className="w-full max-w-md mx-auto">
           {/* Mobile brand header (shown only on mobile) */}
           <div className="md:hidden flex items-center justify-center gap-2 mb-8">
@@ -82,7 +82,7 @@ export const AuthLayout = () => {
             <Outlet />
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

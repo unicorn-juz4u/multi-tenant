@@ -29,6 +29,7 @@ import Modal from '../components/Modal.jsx';
 import ConfirmModal from '../components/ConfirmModal.jsx';
 import EmptyState from '../components/EmptyState.jsx';
 import { TableSkeleton } from '../components/Skeleton.jsx';
+import SEO from '../components/SEO.jsx';
 import {
   Plus,
   Search,
@@ -284,6 +285,12 @@ export const ProjectsPage = () => {
 
   return (
     <div className="space-y-6">
+      <SEO
+        title="Projects"
+        description="Manage, filter, and track isolated organization projects and status workflows."
+        robots="noindex, nofollow"
+      />
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div>

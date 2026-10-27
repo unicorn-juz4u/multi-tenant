@@ -12,6 +12,7 @@ import Card from '../components/Card.jsx';
 import Badge from '../components/Badge.jsx';
 import Button from '../components/Button.jsx';
 import Skeleton from '../components/Skeleton.jsx';
+import SEO from '../components/SEO.jsx';
 import { formatDate } from '../utils/formatters.js';
 import {
   FolderKanban,
@@ -41,6 +42,12 @@ export const DashboardPage = () => {
 
   return (
     <div className="space-y-8">
+      <SEO
+        title={tenant?.name ? `${tenant.name} - Dashboard` : 'Workspace Dashboard'}
+        description="Monitor real-time project metrics, team statistics, and system activity feed within your isolated organization workspace."
+        robots="noindex, nofollow"
+      />
+
       {/* Top Welcome Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
         <div>

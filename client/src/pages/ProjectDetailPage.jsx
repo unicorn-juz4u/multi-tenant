@@ -25,6 +25,7 @@ import Textarea from '../components/Textarea.jsx';
 import Modal from '../components/Modal.jsx';
 import ConfirmModal from '../components/ConfirmModal.jsx';
 import Skeleton from '../components/Skeleton.jsx';
+import SEO from '../components/SEO.jsx';
 import {
   ArrowLeft,
   Calendar,
@@ -139,6 +140,12 @@ export const ProjectDetailPage = () => {
 
   return (
     <div className="space-y-8 animate-fade-in">
+      <SEO
+        title={project?.name ? `${project.name} - Project Details` : 'Project Details'}
+        description={project?.description || 'View isolated tenant project deliverables and timeline details.'}
+        robots="noindex, nofollow"
+      />
+
       {/* Navigation Breadcrumb */}
       <div>
         <Link

@@ -8,6 +8,7 @@ import { selectAuthStatus, selectAuthError } from '../features/auth/selectors.js
 import { registerSchema } from '../utils/validators.js';
 import Input from '../components/Input.jsx';
 import Button from '../components/Button.jsx';
+import SEO from '../components/SEO.jsx';
 import { Building, User, Mail, Lock, UserPlus } from 'lucide-react';
 
 export const RegisterPage = () => {
@@ -41,10 +42,18 @@ export const RegisterPage = () => {
 
   return (
     <div className="space-y-6">
+      <SEO
+        title="Create Organization Account"
+        description="Register a new multi-tenant organization on SaaSify. Row-level data isolation, dual JWT authentication, and full RBAC."
+        keywords="saas registration, create tenant, multi-tenant sign up"
+        robots="index, follow"
+        canonical="https://saasify.app/register"
+      />
+
       <div>
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
           Create Organization
-        </h2>
+        </h1>
         <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
           Register a new tenant and configure your owner account
         </p>

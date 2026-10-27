@@ -8,6 +8,7 @@ import { selectAuthStatus, selectAuthError } from '../features/auth/selectors.js
 import { loginSchema } from '../utils/validators.js';
 import Input from '../components/Input.jsx';
 import Button from '../components/Button.jsx';
+import SEO from '../components/SEO.jsx';
 import { Mail, Lock, LogIn, Sparkles } from 'lucide-react';
 
 export const LoginPage = () => {
@@ -47,10 +48,18 @@ export const LoginPage = () => {
 
   return (
     <div className="space-y-6">
+      <SEO
+        title="Sign In"
+        description="Sign in to access your secure, isolated multi-tenant enterprise workspace on SaaSify."
+        keywords="saas login, multi-tenant sign in, secure enterprise workspace"
+        robots="index, follow"
+        canonical="https://saasify.app/login"
+      />
+
       <div>
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
           Sign In
-        </h2>
+        </h1>
         <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
           Access your isolated tenant environment
         </p>

@@ -2,10 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FileQuestion, Home, ArrowLeft } from 'lucide-react';
 import Button from '../components/Button.jsx';
+import SEO from '../components/SEO.jsx';
 
 export const NotFoundPage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center p-6 bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 animate-fade-in">
+      <SEO
+        title="404 Page Not Found"
+        description="The page you are looking for does not exist, has been removed, or was never created."
+        robots="noindex, nofollow"
+      />
+
       <div className="h-16 w-16 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center mb-6 shadow-sm">
         <FileQuestion className="h-8 w-8" />
       </div>

@@ -17,6 +17,7 @@ import Input from '../components/Input.jsx';
 import Select from '../components/Select.jsx';
 import Badge from '../components/Badge.jsx';
 import Skeleton from '../components/Skeleton.jsx';
+import SEO from '../components/SEO.jsx';
 import {
   Building,
   CreditCard,
@@ -82,6 +83,12 @@ export const SettingsPage = () => {
 
   return (
     <div className="space-y-8 max-w-4xl animate-fade-in">
+      <SEO
+        title="Tenant Settings"
+        description="Configure organization profile, subscription tier, and tenant security settings."
+        robots="noindex, nofollow"
+      />
+
       {/* Header */}
       <div className="pb-4 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-2">

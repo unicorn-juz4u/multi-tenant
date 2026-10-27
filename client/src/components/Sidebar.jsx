@@ -81,7 +81,7 @@ export const Sidebar = () => {
       </div>
 
       {/* Navigation Links */}
-      <div className="flex-1 overflow-y-auto px-4 py-5 space-y-1">
+      <nav aria-label="Sidebar Navigation" className="flex-1 overflow-y-auto px-4 py-5 space-y-1">
         <div className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
           Navigation
         </div>
@@ -108,7 +108,7 @@ export const Sidebar = () => {
               </NavLink>
             );
           })}
-      </div>
+      </nav>
 
       {/* Tenant Security Tag */}
       <div className="p-4 m-4 rounded-xl bg-slate-50 dark:bg-slate-850/60 border border-slate-200/60 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2.5">

@@ -1,0 +1,20 @@
+# SaaSify Multi-Tenant Cloud Platform
+# https://saasify.app
+
+User-agent: *
+
+# Allow crawling of public authentication and landing routes
+Allow: /
+Allow: /login
+Allow: /register
+
+# Protect tenant privacy: disallow internal authenticated workspace routes
+Disallow: /dashboard
+Disallow: /projects
+Disallow: /projects/*
+Disallow: /team
+Disallow: /settings
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://saasify.app/sitemap.xml
