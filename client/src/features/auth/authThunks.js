@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import api, { setAccessTokenInMemory } from '../../api/axiosInstance.js';
+import api, { setAccessTokenInMemory, clearAuthSession } from '../../api/axiosInstance.js';
 import { addToast } from '../ui/uiSlice.js';
 
 export const bootstrapAuth = createAsyncThunk(
@@ -71,12 +71,28 @@ export const register = createAsyncThunk(
 export const logout = createAsyncThunk(
   'auth/logout',
   async (_, { dispatch }) => {
+    // 1. Immediately wipe in-memory token and axios queues
+    setAccessTokenInMemory(null);
+    clearAuthSession();
+
+    // 2. Wipe browser storage (sessionStorage and non-essential localStorage)
+    try {
+      if (typeof window !== 'undefined') {
+        window.sessionStorage?.clear();
+        const savedTheme = window.localStorage?.getItem('theme');
+        window.localStorage?.clear();
+        if (savedTheme) {
+          window.localStorage?.setItem('theme', savedTheme);
+        }
+      }
+    } catch (_) {}
+
+    // 3. Request server to revoke refresh token and clear httpOnly cookie
     try {
       await api.post('/auth/logout');
     } catch (_) {
-      // Clear client state even if network call fails
+      // Proceed with clean state even if server is unreachable
     } finally {
-      setAccessTokenInMemory(null);
       dispatch(addToast({ type: 'info', message: 'You have been logged out.' }));
     }
   }

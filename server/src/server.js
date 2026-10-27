@@ -27,7 +27,9 @@ const startServer = async () => {
 
     const app = createApp();
     const server = app.listen(env.PORT, () => {
-      console.log(`[Server] Running in ${env.NODE_ENV} mode on http://localhost:${env.PORT}`);
+      const publicUrl = process.env.RENDER_EXTERNAL_URL || process.env.PUBLIC_URL || process.env.SERVER_URL;
+      const host = publicUrl || (env.NODE_ENV === 'production' ? `port ${env.PORT}` : `http://localhost:${env.PORT}`);
+      console.log(`[Server] Running in ${env.NODE_ENV} mode on ${host}`);
     });
 
     const shutdown = async (signal) => {

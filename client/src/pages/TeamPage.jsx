@@ -47,13 +47,44 @@ export const TeamPage = () => {
   const currentUser = useAppSelector(selectCurrentUser);
   const isOwner = useAppSelector(selectIsOwner);
 
+  // Search input state with debouncing and instant clear support
+  const [searchInput, setSearchInput] = useState(filters.search || '');
+
+  // Keep local search input in sync if filters.search changes externally
+  useEffect(() => {
+    setSearchInput(filters.search || '');
+  }, [filters.search]);
+
+  // Debounce search input to Redux store
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchInput !== filters.search) {
+        dispatch(setUsersFilters({ search: searchInput, page: 1 }));
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchInput, dispatch, filters.search]);
+
+  const handleSearchChange = (e) => {
+    setSearchInput(e.target.value);
+  };
+
+  const handleClearSearch = () => {
+    setSearchInput('');
+    dispatch(setUsersFilters({ search: '', page: 1 }));
+  };
+
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [deletingUserId, setDeletingUserId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchUsers(filters));
+    const promise = dispatch(fetchUsers(filters));
+    return () => {
+      promise.abort();
+    };
   }, [dispatch, filters.page, filters.role, filters.search]);
 
   // Create User Form
@@ -280,8 +311,9 @@ export const TeamPage = () => {
           <Input
             placeholder="Search team members by name or email..."
             icon={Search}
-            value={filters.search}
-            onChange={(e) => dispatch(setUsersFilters({ search: e.target.value, page: 1 }))}
+            value={searchInput}
+            onChange={handleSearchChange}
+            onClear={handleClearSearch}
           />
         </div>
         <div className="sm:col-span-4">

@@ -22,20 +22,45 @@ const appReducer = combineReducers({
  * Preserves user theme preference so UI doesn't suddenly flash.
  */
 const rootReducer = (state, action) => {
-  if (action.type === 'auth/logout/fulfilled' || action.type === 'auth/resetStore') {
+  const isLogoutOrReset =
+    action.type === 'auth/logout/pending' ||
+    action.type === 'auth/logout/fulfilled' ||
+    action.type === 'auth/resetStore';
+
+  if (isLogoutOrReset) {
     const currentTheme = state?.ui?.theme;
+    const currentToasts = state?.ui?.toasts || [];
     state = undefined;
     if (currentTheme) {
       state = {
         ui: {
           theme: currentTheme,
-          toasts: [],
+          toasts: currentToasts,
           sidebarOpen: false,
         },
       };
     }
   }
-  return appReducer(state, action);
+
+  const nextState = appReducer(state, action);
+
+  if (isLogoutOrReset) {
+    return {
+      ...nextState,
+      auth: {
+        ...nextState.auth,
+        bootstrapping: false,
+        isAuthenticated: false,
+        user: null,
+        tenant: null,
+        accessToken: null,
+        status: 'idle',
+        error: null,
+      },
+    };
+  }
+
+  return nextState;
 };
 
 export const store = configureStore({

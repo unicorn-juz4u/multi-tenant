@@ -4,7 +4,7 @@ import { addToast } from '../ui/uiSlice.js';
 
 export const fetchProjects = createAsyncThunk(
   'projects/fetchProjects',
-  async (params = {}, { rejectWithValue }) => {
+  async (params = {}, { signal, rejectWithValue }) => {
     try {
       const {
         page = 1,
@@ -23,13 +23,16 @@ export const fetchProjects = createAsyncThunk(
       if (sort) queryParams.append('sort', sort);
       if (order) queryParams.append('order', order);
 
-      const response = await api.get(`/projects?${queryParams.toString()}`);
+      const response = await api.get(`/projects?${queryParams.toString()}`, { signal });
       return {
         items: response.data.data,
         pagination: response.data.pagination,
         filters: { page, limit, search, status, sort, order },
       };
     } catch (error) {
+      if (error?.name === 'CanceledError' || error?.code === 'ERR_CANCELED') {
+        return rejectWithValue('aborted');
+      }
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch projects');
     }
   }

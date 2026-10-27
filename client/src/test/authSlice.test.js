@@ -12,7 +12,7 @@ describe('authSlice reducer', () => {
     tenant: null,
     accessToken: null,
     isAuthenticated: false,
-    bootstrapping: true,
+    bootstrapping: false,
     status: 'idle',
     error: null,
   };
@@ -69,13 +69,33 @@ describe('authSlice reducer', () => {
     expect(nextState.user.role).toBe('member');
   });
 
+  it('should handle logout.pending by immediately clearing user and setting bootstrapping to false', () => {
+    const activeState = {
+      user: { id: 'u1', name: 'Alice' },
+      tenant: { id: 't1' },
+      accessToken: 'token',
+      isAuthenticated: true,
+      bootstrapping: true,
+      status: 'succeeded',
+      error: null,
+    };
+
+    const action = { type: logout.pending.type };
+    const nextState = authReducer(activeState, action);
+
+    expect(nextState.isAuthenticated).toBe(false);
+    expect(nextState.bootstrapping).toBe(false);
+    expect(nextState.user).toBeNull();
+    expect(nextState.accessToken).toBeNull();
+  });
+
   it('should handle logout.fulfilled', () => {
     const activeState = {
       user: { id: 'u1', name: 'Alice' },
       tenant: { id: 't1' },
       accessToken: 'token',
       isAuthenticated: true,
-      bootstrapping: false,
+      bootstrapping: true,
       status: 'succeeded',
       error: null,
     };
@@ -84,6 +104,7 @@ describe('authSlice reducer', () => {
     const nextState = authReducer(activeState, action);
 
     expect(nextState.isAuthenticated).toBe(false);
+    expect(nextState.bootstrapping).toBe(false);
     expect(nextState.user).toBeNull();
     expect(nextState.accessToken).toBeNull();
   });

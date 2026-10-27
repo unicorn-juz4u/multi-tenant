@@ -4,7 +4,7 @@ import { addToast } from '../ui/uiSlice.js';
 
 export const fetchUsers = createAsyncThunk(
   'users/fetchUsers',
-  async (params = {}, { rejectWithValue }) => {
+  async (params = {}, { signal, rejectWithValue }) => {
     try {
       const { page = 1, limit = 20, search = '', role = 'all' } = params;
       const queryParams = new URLSearchParams();
@@ -13,13 +13,16 @@ export const fetchUsers = createAsyncThunk(
       if (search) queryParams.append('search', search);
       if (role && role !== 'all') queryParams.append('role', role);
 
-      const response = await api.get(`/users?${queryParams.toString()}`);
+      const response = await api.get(`/users?${queryParams.toString()}`, { signal });
       return {
         items: response.data.data,
         pagination: response.data.pagination,
         filters: { page, limit, search, role },
       };
     } catch (error) {
+      if (error?.name === 'CanceledError' || error?.code === 'ERR_CANCELED') {
+        return rejectWithValue('aborted');
+      }
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch team members');
     }
   }

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../app/hooks.js';
 import { selectCurrentUser, selectCurrentTenant } from '../features/auth/selectors.js';
 import { selectTheme } from '../features/ui/selectors.js';
@@ -10,6 +11,7 @@ import { getInitials } from '../utils/formatters.js';
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const user = useAppSelector(selectCurrentUser);
   const tenant = useAppSelector(selectCurrentTenant);
   const theme = useAppSelector(selectTheme);
@@ -28,9 +30,10 @@ export const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setDropdownOpen(false);
-    dispatch(logout());
+    await dispatch(logout());
+    navigate('/login', { replace: true, state: {} });
   };
 
   return (

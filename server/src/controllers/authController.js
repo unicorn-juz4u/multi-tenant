@@ -70,6 +70,7 @@ export const logout = asyncHandler(async (req, res) => {
   }
 
   res.clearCookie('refreshToken', getClearCookieOptions());
+  res.clearCookie('refreshToken', { ...getClearCookieOptions(), path: '/' });
 
   res.status(200).json({
     success: true,

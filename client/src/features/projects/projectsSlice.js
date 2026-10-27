@@ -62,9 +62,11 @@ const projectsSlice = createSlice({
         // Set all items in normalized adapter
         projectsAdapter.setAll(state, action.payload.items);
         state.pagination = action.payload.pagination;
-        state.filters = action.payload.filters;
       })
       .addCase(fetchProjects.rejected, (state, action) => {
+        if (action.meta?.aborted || action.payload === 'aborted') {
+          return;
+        }
         state.status = 'failed';
         state.error = action.payload || 'Failed to fetch projects';
       });

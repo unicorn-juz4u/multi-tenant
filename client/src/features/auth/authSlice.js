@@ -6,7 +6,7 @@ const initialState = {
   tenant: null,
   accessToken: null,
   isAuthenticated: false,
-  bootstrapping: true,
+  bootstrapping: false, // Default to false so any state reset never hangs in loading
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
 };
@@ -20,6 +20,7 @@ const authSlice = createSlice({
       if (action.payload.user) state.user = action.payload.user;
       if (action.payload.tenant) state.tenant = action.payload.tenant;
       state.isAuthenticated = true;
+      state.bootstrapping = false;
     },
     resetStore: () => {
       return { ...initialState, bootstrapping: false };
@@ -90,14 +91,34 @@ const authSlice = createSlice({
       });
 
     // logout
-    builder.addCase(logout.fulfilled, (state) => {
-      state.user = null;
-      state.tenant = null;
-      state.accessToken = null;
-      state.isAuthenticated = false;
-      state.status = 'idle';
-      state.error = null;
-    });
+    builder
+      .addCase(logout.pending, (state) => {
+        state.user = null;
+        state.tenant = null;
+        state.accessToken = null;
+        state.isAuthenticated = false;
+        state.bootstrapping = false;
+        state.status = 'idle';
+        state.error = null;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+        state.tenant = null;
+        state.accessToken = null;
+        state.isAuthenticated = false;
+        state.bootstrapping = false;
+        state.status = 'idle';
+        state.error = null;
+      })
+      .addCase(logout.rejected, (state) => {
+        state.user = null;
+        state.tenant = null;
+        state.accessToken = null;
+        state.isAuthenticated = false;
+        state.bootstrapping = false;
+        state.status = 'idle';
+        state.error = null;
+      });
 
     // fetchMe
     builder.addCase(fetchMe.fulfilled, (state, action) => {

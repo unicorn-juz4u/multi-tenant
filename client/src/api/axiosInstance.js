@@ -29,6 +29,12 @@ export const getAccessTokenInMemory = () => {
   return inMemoryToken;
 };
 
+export const clearAuthSession = () => {
+  inMemoryToken = null;
+  failedQueue = [];
+  isRefreshing = false;
+};
+
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
   withCredentials: true, // Always send cookies (for refresh token)

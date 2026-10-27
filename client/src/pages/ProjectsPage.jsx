@@ -51,6 +51,34 @@ export const ProjectsPage = () => {
   const currentUser = useAppSelector(selectCurrentUser);
   const isAdminOrOwner = useAppSelector(selectIsAdminOrOwner);
 
+  // Search input state with debouncing and instant clear support
+  const [searchInput, setSearchInput] = useState(filters.search || '');
+
+  // Keep local search input in sync if filters.search changes externally
+  useEffect(() => {
+    setSearchInput(filters.search || '');
+  }, [filters.search]);
+
+  // Debounce search input to Redux store
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchInput !== filters.search) {
+        dispatch(setProjectsFilters({ search: searchInput, page: 1 }));
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchInput, dispatch, filters.search]);
+
+  const handleSearchChange = (e) => {
+    setSearchInput(e.target.value);
+  };
+
+  const handleClearSearch = () => {
+    setSearchInput('');
+    dispatch(setProjectsFilters({ search: '', page: 1 }));
+  };
+
   // Local state only for UI modals
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
@@ -58,7 +86,10 @@ export const ProjectsPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchProjects(filters));
+    const promise = dispatch(fetchProjects(filters));
+    return () => {
+      promise.abort();
+    };
   }, [dispatch, filters.page, filters.status, filters.sort, filters.order, filters.search]);
 
   // Create Form
@@ -272,10 +303,11 @@ export const ProjectsPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
         <div className="sm:col-span-5">
           <Input
-            placeholder="Search projects..."
+            placeholder="Search projects by name or description..."
             icon={Search}
-            value={filters.search}
-            onChange={(e) => dispatch(setProjectsFilters({ search: e.target.value, page: 1 }))}
+            value={searchInput}
+            onChange={handleSearchChange}
+            onClear={handleClearSearch}
           />
         </div>
         <div className="sm:col-span-4 flex gap-2">
